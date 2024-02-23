@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: './2024/02/20_01-create-table.sql'
+      relativeToChangelogFile: true

@@ -1,0 +1,15 @@
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+    path: /graphql
+  datasource:
+    url: 'jdbc:postgresql://localhost:15432/library_db'
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/changelog/main-changelog.yaml
