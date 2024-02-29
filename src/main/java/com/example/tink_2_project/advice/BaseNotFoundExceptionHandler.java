@@ -17,5 +17,6 @@ public class BaseNotFoundExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage()));
     }
 
-    public record ErrorResponse(String message) {}
+    public record ErrorResponse(String message) {
+    }
 }
