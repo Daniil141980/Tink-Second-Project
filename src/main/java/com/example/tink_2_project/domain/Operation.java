@@ -18,6 +18,6 @@ public class Operation {
     private OperationType type;
 
     public enum OperationType {
-        WRITE, READ;
+        WRITE, READ
     }
 }
