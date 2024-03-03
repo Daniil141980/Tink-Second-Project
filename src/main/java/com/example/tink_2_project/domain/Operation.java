@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
-@Document
+@Document("operation")
 @AllArgsConstructor
 public class Operation {
     @Id

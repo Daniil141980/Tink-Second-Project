@@ -7,6 +7,7 @@ import com.example.tink_2_project.domain.Operation.OperationType;
 import com.example.tink_2_project.exception.EntityModelNotFoundException;
 import com.example.tink_2_project.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +23,13 @@ public class BookService {
     private final OperationService operationService;
     private final ImageService imageService;
 
+    @Cacheable(value = "BookService::getAllBooks")
     public List<BookEntity> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Transactional
+    @CacheEvict(value = "BookService::getAllBooks", allEntries = true)
     public BookEntity addBook(BookEntity book, List<Long> imagesId) {
         if (!imagesId.isEmpty() && !imageService.existsAll(imagesId)) {
             throw new EntityModelNotFoundException("Изображения", "id", "?");

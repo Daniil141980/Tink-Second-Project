@@ -46,6 +46,7 @@ public class ImageService {
         return image.get();
     }
 
+    @Cacheable(value = "ImageService::downloadImage", key = "#link")
     public byte[] downloadImage(String link) throws Exception {
         if (!imageRepository.existsImageEntitiesByLink(link)) {
             throw new EntityModelNotFoundException("Изображение", "link", link);
@@ -53,7 +54,7 @@ public class ImageService {
         return minioService.downloadImage(link);
     }
 
-    @Cacheable(value = "ImageService::uploadImage", key = "#file.getOriginalFilename()")
+    @Cacheable(value = "ImageService::uploadImage", key = "#file.originalFilename")
     public ImageEntity uploadImage(MultipartFile file) throws Exception {
         var image = minioService.uploadImage(file);
         imageRepository.save(image);
