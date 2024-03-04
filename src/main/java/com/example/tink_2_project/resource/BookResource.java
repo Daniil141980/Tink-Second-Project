@@ -2,34 +2,46 @@ package com.example.tink_2_project.resource;
 
 import com.example.tink_2_project.dto.book.BookRequestDto;
 import com.example.tink_2_project.dto.book.BookResponseDto;
+import com.example.tink_2_project.dto.image.ImageResponseDto;
 import com.example.tink_2_project.mapper.BookMapper;
+import com.example.tink_2_project.mapper.ImageMapper;
 import com.example.tink_2_project.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class BookResource {
     private final BookService bookService;
     private final BookMapper bookMapper;
+    private final ImageMapper imageMapper;
 
-    @MutationMapping
-    public BookResponseDto addBook(@Argument BookRequestDto bookRequestDto) {
-        return bookMapper.toBookResponseDto(bookService.addBook(bookMapper.fromBookRequestDto(bookRequestDto)));
+    @PostMapping("/add")
+    public BookResponseDto addBook(@RequestBody BookRequestDto bookRequestDto) {
+        return bookMapper.toBookResponseDto(
+                bookService.addBook(bookMapper.fromBookRequestDto(bookRequestDto),
+                        bookRequestDto.imagesId() != null
+                                ? bookRequestDto.imagesId()
+                                : List.of()
+                )
+        );
     }
 
-    @QueryMapping
+    @GetMapping("/books")
     public List<BookResponseDto> getBooks() {
         return bookService.getAllBooks().stream().map(bookMapper::toBookResponseDto).toList();
     }
 
-    @QueryMapping
-    public BookResponseDto getBook(@Argument Long id) {
+    @GetMapping("/book/{id}")
+    public BookResponseDto getBook(@PathVariable Long id) {
         return bookMapper.toBookResponseDto(bookService.getBook(id));
+    }
+
+    @GetMapping("/book/{id}/images")
+    public List<ImageResponseDto> getBookImages(@PathVariable Long id) {
+        return bookService.getBookImages(id).stream().map(imageMapper::toImageResponseDto).toList();
     }
 }
