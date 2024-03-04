@@ -39,7 +39,7 @@ public class BookService {
         operationService.logOperation(
                 new Operation(
                         null,
-                        String.format("Add book: %s", book),
+                        String.format("Write book: %s", book),
                         LocalDateTime.now(),
                         OperationType.WRITE
                 )

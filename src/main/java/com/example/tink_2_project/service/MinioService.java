@@ -2,6 +2,7 @@ package com.example.tink_2_project.service;
 
 import com.example.tink_2_project.config.MinioProperties;
 import com.example.tink_2_project.domain.ImageEntity;
+import com.example.tink_2_project.exception.StorageException;
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -23,8 +25,10 @@ public class MinioService {
     @PostConstruct
     public void init() {
         var bucketName = properties.getBucket();
-        boolean doesBucketExists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-        if (!doesBucketExists) {
+        if (Objects.isNull(bucketName) || bucketName.isBlank()) {
+            throw new StorageException("You should specify bucket name to use storage");
+        }
+        if (!client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
             client.makeBucket(MakeBucketArgs.builder()
                     .bucket(bucketName)
                     .build()
@@ -32,7 +36,8 @@ public class MinioService {
         }
     }
 
-    public ImageEntity uploadImage(MultipartFile file) throws Exception {
+    @SneakyThrows
+    public ImageEntity uploadImage(MultipartFile file) {
         var fileId = UUID.randomUUID().toString();
         client.putObject(
                 PutObjectArgs.builder()
@@ -46,7 +51,8 @@ public class MinioService {
         return new ImageEntity(null, file.getOriginalFilename(), (int) file.getSize(), fileId, null);
     }
 
-    public byte[] downloadImage(String link) throws Exception {
+    @SneakyThrows
+    public byte[] downloadImage(String link) {
         return IOUtils.toByteArray(client.getObject(
                 GetObjectArgs.builder()
                         .bucket(properties.getBucket())

@@ -24,7 +24,7 @@ public class BookEntity implements Serializable {
     @Column(name = "author")
     private String author;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<ImageEntity> images;
 
 }

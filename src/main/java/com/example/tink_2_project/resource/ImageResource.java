@@ -16,12 +16,12 @@ public class ImageResource {
     private final ImageMapper imageMapper;
 
     @PostMapping("/load")
-    public ImageResponseDto loadImage(MultipartFile file) throws Exception {
+    public ImageResponseDto loadImage(MultipartFile file) {
         return imageMapper.toImageResponseDto(imageService.uploadImage(file));
     }
 
     @GetMapping(value = "/image/{link}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getImage(@PathVariable String link) throws Exception {
+    public byte[] getImage(@PathVariable String link) {
         return imageService.downloadImage(link);
     }
 

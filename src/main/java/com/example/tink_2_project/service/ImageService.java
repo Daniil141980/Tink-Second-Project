@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,20 +48,21 @@ public class ImageService {
     }
 
     @Cacheable(value = "ImageService::downloadImage", key = "#link")
-    public byte[] downloadImage(String link) throws Exception {
+    public byte[] downloadImage(String link) {
         if (!imageRepository.existsImageEntitiesByLink(link)) {
             throw new EntityModelNotFoundException("Изображение", "link", link);
         }
         return minioService.downloadImage(link);
     }
 
+    @Transactional
     @Cacheable(value = "ImageService::uploadImage", key = "#file.originalFilename")
-    public ImageEntity uploadImage(MultipartFile file) throws Exception {
+    public ImageEntity uploadImage(MultipartFile file) {
         var image = minioService.uploadImage(file);
         imageRepository.save(image);
         operationService.logOperation(
                 new Operation(null,
-                        String.format("Upload image: %s", image),
+                        String.format("Write image: %s", image),
                         LocalDateTime.now(),
                         OperationType.WRITE
                 )
