@@ -2,6 +2,8 @@ package com.example.tink_2_project.resource;
 
 import com.example.tink_2_project.dto.image.ImageResponseDto;
 import com.example.tink_2_project.mapper.ImageMapper;
+import com.example.tink_2_project.security.annotations.IsAdmin;
+import com.example.tink_2_project.security.annotations.IsUser;
 import com.example.tink_2_project.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ public class ImageResource {
     private final ImageMapper imageMapper;
 
     @PostMapping("/load")
+    @IsUser
     public ImageResponseDto loadImage(MultipartFile file) {
         return imageMapper.toImageResponseDto(imageService.uploadImage(file));
     }
@@ -26,6 +29,7 @@ public class ImageResource {
     }
 
     @GetMapping("/image/{id}/meta")
+    @IsAdmin
     public ImageResponseDto getMeta(@PathVariable Long id) {
         return imageMapper.toImageResponseDto(imageService.getImageMeta(id));
     }

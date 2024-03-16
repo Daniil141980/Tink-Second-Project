@@ -1,10 +1,10 @@
 package com.example.tink_2_project.domain;
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data

@@ -3,6 +3,7 @@ package com.example.tink_2_project.resource;
 import com.example.tink_2_project.domain.Operation.OperationType;
 import com.example.tink_2_project.dto.operation.OperationResponseDto;
 import com.example.tink_2_project.mapper.OperationMapper;
+import com.example.tink_2_project.security.annotations.IsAdmin;
 import com.example.tink_2_project.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class OperationResource {
     private final OperationMapper operationMapper;
 
     @GetMapping("/operation/{type}")
+    @IsAdmin
     public List<OperationResponseDto> getOperations(@PathVariable OperationType type) {
         return operationService.getOperationsByType(type).stream().map(operationMapper::toOperationResponseDto).toList();
     }

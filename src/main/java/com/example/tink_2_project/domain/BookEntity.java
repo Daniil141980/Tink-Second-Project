@@ -1,8 +1,8 @@
 package com.example.tink_2_project.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
