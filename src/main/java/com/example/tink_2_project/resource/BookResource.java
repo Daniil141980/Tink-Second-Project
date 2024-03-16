@@ -5,6 +5,7 @@ import com.example.tink_2_project.dto.book.BookResponseDto;
 import com.example.tink_2_project.dto.image.ImageResponseDto;
 import com.example.tink_2_project.mapper.BookMapper;
 import com.example.tink_2_project.mapper.ImageMapper;
+import com.example.tink_2_project.security.annotations.IsUser;
 import com.example.tink_2_project.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class BookResource {
     private final ImageMapper imageMapper;
 
     @PostMapping("/add")
+    @IsUser
     public BookResponseDto addBook(@RequestBody BookRequestDto bookRequestDto) {
         return bookMapper.toBookResponseDto(
                 bookService.addBook(bookMapper.fromBookRequestDto(bookRequestDto),

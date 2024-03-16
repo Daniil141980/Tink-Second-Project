@@ -4,13 +4,13 @@ import com.example.tink_2_project.config.MinioProperties;
 import com.example.tink_2_project.domain.ImageEntity;
 import com.example.tink_2_project.exception.StorageException;
 import io.minio.*;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 import java.util.UUID;

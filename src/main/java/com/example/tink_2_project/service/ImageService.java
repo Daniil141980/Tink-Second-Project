@@ -5,12 +5,12 @@ import com.example.tink_2_project.domain.Operation;
 import com.example.tink_2_project.domain.Operation.OperationType;
 import com.example.tink_2_project.exception.EntityModelNotFoundException;
 import com.example.tink_2_project.repository.ImageRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
